@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Critical Quest — New Social Science Library</title>
+<meta name="description" content="Critical Quest is a non-profit, self-financed publisher in New Delhi. 164 short books on caste, religion, nation and critical social science, from ₹25.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Mono:wght@400;500;600&family=Spectral:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#17181c;
+  --blue:#16367e;
+  --blue-deep:#0d2354;
+  --red:#c1331d;
+  --paper:#e7e3d6;
+  --paper-lit:#f2efe6;
+  --rule:#b8b2a0;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+  --body:"Spectral",Georgia,serif;
+  --display:"Anton",Impact,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--body);font-size:17px;line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+img{max-width:100%}
+a{color:inherit}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+
+/* ---------- utility type ---------- */
+.eyebrow{
+  font-family:var(--mono);font-size:11px;letter-spacing:.22em;
+  text-transform:uppercase;font-weight:500;
+}
+.dsp{font-family:var(--display);font-weight:400;letter-spacing:-.015em;line-height:.85;text-transform:uppercase}
+
+/* ---------- top bar ---------- */
+.topbar{
+  position:fixed;top:0;left:0;right:0;z-index:60;
+  background:var(--blue);color:var(--paper);
+  transform:translateY(-102%);transition:transform .35s ease;
+  border-bottom:1px solid rgba(231,227,214,.25);
+}
+.topbar.on{transform:none}
+.topbar .wrap{display:flex;align-items:center;gap:20px;height:52px}
+.topbar .mk{font-family:var(--display);font-size:19px;letter-spacing:.01em;text-transform:uppercase}
+.topbar nav{margin-left:auto;display:flex;gap:20px}
+.topbar nav a{
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;
+  text-transform:uppercase;text-decoration:none;opacity:.82;
+}
+.topbar nav a:hover{opacity:1;text-decoration:underline;text-underline-offset:4px}
+
+/* ---------- cover ---------- */
+.cover{
+  background:var(--blue);color:var(--paper);
+  min-height:100svh;display:flex;flex-direction:column;
+  padding:18px;position:relative;
+}
+.cover-trim{
+  border:1.5px solid rgba(231,227,214,.5);flex:1;
+  display:flex;flex-direction:column;padding:clamp(20px,4vw,44px);
+  position:relative;overflow:hidden;
+}
+.cover-top{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;opacity:.85}
+.cover-mid{margin:auto 0;padding:6vh 0}
+.mast{font-size:clamp(3.6rem,15.5vw,10.5rem);display:block}
+.mast-rule{
+  display:flex;align-items:center;gap:18px;
+  margin:clamp(8px,1.4vw,16px) 0;
+}
+.mast-rule::before,.mast-rule::after{content:"";height:1px;background:rgba(231,227,214,.55);flex:1}
+.mast-rule span{white-space:nowrap;opacity:.9}
+.cover-copy{
+  max-width:56ch;margin-top:clamp(22px,4vw,40px);
+  font-size:clamp(1rem,1.5vw,1.2rem);line-height:1.6;
+}
+.cover-copy em{font-style:italic;color:#fff}
+.cover-bot{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.cover-facts{display:flex;gap:28px;flex-wrap:wrap;opacity:.85}
+.stamp{
+  border:2px solid var(--red);color:var(--red);background:var(--paper);
+  padding:10px 16px 8px;transform:rotate(-5deg);
+  font-family:var(--mono);font-weight:600;text-align:center;
+  box-shadow:0 0 0 2px var(--paper), 0 0 0 3.5px var(--red);
+}
+.stamp b{display:block;font-size:22px;letter-spacing:-.02em}
+.stamp i{display:block;font-style:normal;font-size:9.5px;letter-spacing:.18em;margin-top:3px}
+.scroll-cue{
+  position:absolute;bottom:0;left:50%;transform:translateX(-50%);
+  font-family:var(--mono);font-size:10px;letter-spacing:.2em;opacity:.6;
+}
+
+/* load reveal */
+.rev{opacity:0;transform:translateY(14px);animation:rise .8s cubic-bezier(.2,.7,.3,1) forwards}
+.rev:nth-child(1){animation-delay:.05s}
+.d1{animation-delay:.15s}.d2{animation-delay:.28s}.d3{animation-delay:.42s}.d4{animation-delay:.56s}
+@keyframes rise{to{opacity:1;transform:none}}
+
+/* ---------- sections ---------- */
+section{padding:clamp(56px,9vw,110px) 0}
+.sec-head{display:flex;align-items:baseline;gap:16px;margin-bottom:34px}
+.sec-head h2{font-family:var(--display);font-size:clamp(1.9rem,4.6vw,3.1rem);margin:0;line-height:.9;text-transform:uppercase;letter-spacing:-.015em}
+.sec-head .eyebrow{color:var(--red);white-space:nowrap}
+.rule{height:1px;background:var(--rule);flex:1}
+
+/* creed */
+.creed{border-top:1px solid var(--rule)}
+.creed-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(28px,5vw,64px)}
+.creed p{margin:0 0 18px}
+.creed .lead{font-size:clamp(1.25rem,2.5vw,1.65rem);line-height:1.42}
+.creed .lead b{font-weight:600;background:linear-gradient(transparent 62%,rgba(193,51,29,.28) 62%)}
+.aside-card{border-left:2px solid var(--red);padding-left:20px;font-size:15.5px}
+.aside-card h3{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;margin:0 0 12px;color:var(--red)}
+
+/* ---------- catalogue ---------- */
+.cat{background:var(--paper-lit);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.controls{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:18px}
+.search{flex:1;min-width:240px;position:relative}
+.search input{
+  width:100%;font-family:var(--mono);font-size:14px;padding:13px 14px 13px 38px;
+  background:transparent;border:1px solid var(--rule);color:var(--ink);border-radius:0;
+}
+.search input:focus{outline:2px solid var(--blue);outline-offset:-1px}
+.search::before{content:"⌕";position:absolute;left:13px;top:9px;font-size:20px;opacity:.55}
+.chips{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:20px}
+.chip{
+  font-family:var(--mono);font-size:11px;letter-spacing:.09em;text-transform:uppercase;
+  padding:7px 11px;border:1px solid var(--rule);background:transparent;cursor:pointer;color:var(--ink);
+}
+.chip:hover{border-color:var(--ink)}
+.chip[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:var(--paper)}
+.chip b{font-weight:400;opacity:.55;margin-left:5px}
+.chip[aria-pressed="true"] b{opacity:.7}
+
+.listhead,.row{
+  display:grid;
+  grid-template-columns:46px 1fr 62px 66px 34px;
+  gap:14px;align-items:center;
+}
+.listhead{
+  font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;
+  padding:0 8px 8px;border-bottom:1px solid var(--rule);opacity:.6;
+}
+.list{list-style:none;margin:0;padding:0}
+.row{
+  padding:11px 8px;border-bottom:1px solid rgba(184,178,160,.45);
+  cursor:pointer;position:relative;
+}
+.row:hover{background:rgba(22,54,126,.055)}
+.row input{position:absolute;opacity:0;width:0;height:0}
+.sl{font-family:var(--mono);font-size:12px;opacity:.5;letter-spacing:.02em}
+.who{font-family:var(--mono);font-size:11px;letter-spacing:.11em;text-transform:uppercase;color:var(--blue);display:block;margin-bottom:1px}
+.what{font-size:16.5px;line-height:1.3}
+.pgs,.rs{font-family:var(--mono);font-size:12.5px;text-align:right;opacity:.7}
+.rs{opacity:1;font-weight:500}
+.box{
+  width:19px;height:19px;border:1.5px solid var(--rule);margin-left:auto;
+  display:grid;place-items:center;font-family:var(--mono);font-size:13px;color:transparent;
+}
+.row:hover .box{border-color:var(--blue)}
+.row.sel{background:rgba(193,51,29,.07)}
+.row.sel::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--red)}
+.row.sel .box{background:var(--red);border-color:var(--red);color:var(--paper)}
+.row.sel .sl{color:var(--red);opacity:1}
+.row:focus-within{outline:2px solid var(--blue);outline-offset:-2px}
+.empty{padding:44px 8px;font-family:var(--mono);font-size:13px;opacity:.65}
+.cat-foot{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-top:16px;font-family:var(--mono);font-size:12px}
+.linkish{background:none;border:0;padding:0;font:inherit;color:var(--blue);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+
+/* also available */
+.also-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule)}
+.also-card{background:var(--paper);padding:24px}
+.also-card .who{margin-bottom:6px}
+.also-card h4{font-size:19px;margin:0 0 14px;font-weight:600;line-height:1.25}
+.also-card .rs{text-align:left;font-size:15px}
+
+/* ---------- order ---------- */
+.order{background:var(--blue);color:var(--paper)}
+.order .rule{background:rgba(231,227,214,.4)}
+.order .sec-head .eyebrow{color:#f0a99b}
+.order-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,56px);align-items:start}
+.slip{background:var(--paper);color:var(--ink);padding:22px;font-family:var(--mono);font-size:13px}
+.slip-top{display:flex;justify-content:space-between;border-bottom:2px solid var(--ink);padding-bottom:10px;margin-bottom:12px}
+.slip-top b{font-family:var(--display);font-size:15px;letter-spacing:.02em;font-weight:400}
+.slip-lines{max-height:280px;overflow:auto;margin:0 0 12px;padding:0;list-style:none}
+.slip-lines li{display:flex;gap:10px;padding:4px 0;border-bottom:1px dotted var(--rule)}
+.slip-lines li span:first-child{opacity:.5;min-width:34px}
+.slip-lines li span:nth-child(2){flex:1}
+.slip-none{opacity:.55;padding:18px 0;line-height:1.6}
+.slip-total{display:flex;justify-content:space-between;border-top:2px solid var(--ink);padding-top:10px;font-weight:600;font-size:15px}
+.slip-note{margin-top:10px;font-size:11px;line-height:1.5;opacity:.65}
+.acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.btn{
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.13em;text-transform:uppercase;
+  padding:12px 15px;border:1.5px solid var(--ink);background:var(--ink);color:var(--paper);
+  cursor:pointer;text-decoration:none;display:inline-block;
+}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn:hover{background:var(--red);border-color:var(--red);color:var(--paper)}
+.btn[aria-disabled="true"]{opacity:.4;pointer-events:none}
+.pay dt{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;opacity:.7;margin-top:16px}
+.pay dd{margin:2px 0 0;font-family:var(--mono);font-size:14px}
+.pay dd.big{font-size:16px}
+.steps{list-style:none;margin:0 0 26px;padding:0;counter-reset:s}
+.steps li{position:relative;padding-left:38px;margin-bottom:14px;counter-increment:s;line-height:1.5}
+.steps li::before{
+  content:counter(s);position:absolute;left:0;top:1px;
+  font-family:var(--mono);font-size:11px;width:22px;height:22px;
+  border:1px solid rgba(231,227,214,.6);display:grid;place-items:center;
+}
+
+/* ---------- about / contact ---------- */
+.people{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:clamp(24px,4vw,48px)}
+.contact{border-top:1px solid var(--rule);background:var(--paper-lit)}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:28px}
+.cgrid h3{font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--red);margin:0 0 10px}
+.cgrid p{margin:0;font-family:var(--mono);font-size:14px;line-height:1.7}
+.cgrid a{text-decoration:none;border-bottom:1px solid var(--rule)}
+.cgrid a:hover{border-color:var(--red);color:var(--red)}
+footer{background:var(--ink);color:var(--paper);padding:34px 0;font-family:var(--mono);font-size:11.5px;letter-spacing:.06em}
+footer .wrap{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;opacity:.75}
+
+/* ---------- docked slip bar ---------- */
+.dock{
+  position:fixed;left:0;right:0;bottom:0;z-index:70;
+  background:var(--red);color:var(--paper);
+  transform:translateY(101%);transition:transform .3s ease;
+}
+.dock.on{transform:none}
+.dock .wrap{display:flex;align-items:center;gap:16px;height:58px;font-family:var(--mono);font-size:13px}
+.dock b{font-weight:600}
+.dock a{margin-left:auto;color:var(--paper);text-decoration:none;border:1.5px solid var(--paper);padding:8px 14px;font-size:11px;letter-spacing:.14em;text-transform:uppercase}
+.dock a:hover{background:var(--paper);color:var(--red)}
+.dock button{background:none;border:0;color:var(--paper);font:inherit;opacity:.75;cursor:pointer;text-decoration:underline}
+
+/* ---------- responsive ---------- */
+@media (max-width:820px){
+  .creed-grid,.order-grid{grid-template-columns:1fr}
+  .listhead{display:none}
+  .row{grid-template-columns:38px 1fr 30px;gap:10px;padding:13px 8px 13px 10px}
+  .row .pgs{display:none}
+  .rs{grid-column:2;text-align:left;font-size:12px;opacity:.75;margin-top:3px}
+  .what{font-size:16px}
+  .box{grid-row:1/3}
+  body{padding-bottom:58px}
+}
+@media (max-width:520px){
+  .cover-facts{gap:16px}
+  .stamp{transform:rotate(-4deg) scale(.9)}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  html{scroll-behavior:auto}
+  .rev{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar" id="topbar">
+  <div class="wrap">
+    <span class="mk">Critical Quest</span>
+    <nav>
+      <a href="#catalogue">Catalogue</a>
+      <a href="#order">Order</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</div>
+
+<header class="cover">
+  <div class="cover-trim">
+    <div class="cover-top eyebrow rev">
+      <span>New Delhi</span>
+      <span>Non-profit · Self-financed</span>
+    </div>
+
+    <div class="cover-mid">
+      <span class="dsp mast rev d1">Critical</span>
+      <div class="mast-rule rev d2"><span class="eyebrow">New Social Science Library</span></div>
+      <span class="dsp mast rev d2">Quest</span>
+      <p class="cover-copy rev d3">
+        Short books that put the best of social science writing — on caste, religion,
+        nation and emancipation — within reach of any student, teacher or reader.
+        <em>Priced to be bought, not admired.</em>
+      </p>
+    </div>
+
+    <div class="cover-bot">
+      <div class="cover-facts eyebrow rev d4">
+        <span id="fact-count">164 titles in print</span>
+        <span>32–96 pages each</span>
+        <span id="fact-total">Complete set ₹5,655</span>
+      </div>
+      <div class="stamp rev d4"><b>₹25–60</b><i>Per title</i></div>
+    </div>
+    <div class="scroll-cue">↓ Catalogue</div>
+  </div>
+</header>
+
+<section class="creed">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">What we publish</span>
+      <span class="rule"></span>
+    </div>
+    <div class="creed-grid">
+      <div>
+        <p class="lead">
+          Critical Quest is a mini publication venture that makes the best and most relevant
+          social science writing from India and abroad available to students, teachers and the
+          general reading public. It also works to <b>retrieve the rational-liberative strands
+          of Indian history and culture</b> and hold them inside present-day debate.
+        </p>
+        <p>
+          The aim is not only to inform and enlighten, but to move readers towards an
+          emancipatory engagement with the society around them — a tool for the deconstruction
+          as well as the reconstruction of socially relevant knowledge.
+        </p>
+        <p>
+          Nothing here is profit-oriented. We invite the co-operation of everyone committed to
+          the socio-political transformation of Indian societies towards greater social
+          inclusion and more egalitarian practice.
+        </p>
+      </div>
+      <div class="aside-card">
+        <h3>How the books work</h3>
+        <p>
+          Each title is a single essay or lecture, set in 32 to 96 pages and priced between
+          ₹25 and ₹60 — cheap enough to buy a dozen, short enough to finish in a sitting,
+          and durable enough to teach from.
+        </p>
+        <p>
+          Authors range from Ambedkar, Phule, Periyar and Iyothee Thassar to Uma Chakravarti,
+          Romila Thapar, Amartya Sen, Nancy Fraser, Althusser and Horkheimer.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cat" id="catalogue">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">The list</span>
+      <h2>Catalogue</h2>
+      <span class="rule"></span>
+    </div>
+
+    <div class="controls">
+      <label class="search">
+        <span class="sr-only" style="position:absolute;left:-9999px">Search the catalogue</span>
+        <input id="q" type="search" placeholder="Search author or title — try “Ambedkar”, “caste”, “Periyar”" autocomplete="off">
+      </label>
+    </div>
+    <div class="chips" id="chips"></div>
+
+    <div class="listhead">
+      <span>No.</span><span>Author &amp; title</span><span style="text-align:right">Pages</span>
+      <span style="text-align:right">Price</span><span></span>
+    </div>
+    <ul class="list" id="list"></ul>
+    <p class="empty" id="empty" hidden>No title matches that. Try a shorter word, or clear the filter.</p>
+
+    <div class="cat-foot">
+      <span id="showing"></span>
+      <span>
+        <button class="linkish" id="selall">Select every title</button> ·
+        <button class="linkish" id="clearall">Clear selection</button>
+      </span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Also available</span>
+      <h2>Full-length</h2>
+      <span class="rule"></span>
+    </div>
+    <div class="also-grid" id="also"></div>
+  </div>
+</section>
+
+<section class="order" id="order">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Ordering</span>
+      <h2>Build your order</h2>
+      <span class="rule"></span>
+    </div>
+    <div class="order-grid">
+      <div>
+        <ol class="steps">
+          <li>Tick the titles you want in the catalogue above. Your slip fills in as you go.</li>
+          <li>Send the slip to us by email or WhatsApp — copy it, or use the buttons on the slip.</li>
+          <li>Pay the total in advance by bank transfer, money order or demand draft favouring
+              <strong>Critical Quest</strong>, payable at New Delhi. Postal registration is included in the price.</li>
+          <li>We post the books by Indian Post. Please avoid private courier services.</li>
+        </ol>
+
+        <dl class="pay">
+          <dt>Account name</dt><dd class="big">Critical Quest</dd>
+          <dt>Bank</dt><dd>Bank of Maharashtra, South Extension Part I, Ring Road, New Delhi 110049</dd>
+          <dt>Account number</dt><dd class="big">60132709167</dd>
+          <dt>IFSC / Bank code</dt><dd>MAHB0000392</dd>
+          <dt>SWIFT</dt><dd>MAHBINBBCPN</dd>
+        </dl>
+      </div>
+
+      <div class="slip" id="slip">
+        <div class="slip-top">
+          <b>Order slip</b>
+          <span id="slip-date"></span>
+        </div>
+        <ul class="slip-lines" id="slip-lines"></ul>
+        <p class="slip-none" id="slip-none">No titles chosen yet.<br>Tick anything in the catalogue and it appears here.</p>
+        <div class="slip-total"><span id="slip-count">0 titles</span><span id="slip-sum">₹0</span></div>
+        <p class="slip-note">Prices include postal registration within India. Overseas orders — write to us for postage before paying.</p>
+        <div class="acts">
+          <button class="btn" id="copy" aria-disabled="true">Copy slip</button>
+          <a class="btn ghost" id="mail" aria-disabled="true" href="#">Email order</a>
+          <a class="btn ghost" id="wa" aria-disabled="true" href="#" target="_blank" rel="noopener">WhatsApp</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Who we are</span>
+      <h2>About</h2>
+      <span class="rule"></span>
+    </div>
+    <div class="people">
+      <div>
+        <p>
+          Critical Quest is not a commercial venture. It is a self-financed publication effort,
+          run by <strong>Josna T. Jacob</strong> (proprietor and manager) and edited by
+          <strong>Gnana Aloysius</strong>.
+        </p>
+        <p>
+          The two spent more than fifteen years as socio-political activists among the tribals of
+          Jharkhand. Alongside that work they retrieved, recorded and published the fast-vanishing
+          traditions of tribal assertion for collective identity and autonomy — a parallel effort to
+          the political struggles themselves, and one that measurably strengthened solidarity and
+          confidence.
+        </p>
+      </div>
+      <div>
+        <p>
+          That experience is what this list broadens. The conviction behind it: for the gains of the
+          economic and political struggles of India's subalternised social groups to hold, those
+          struggles have to be rooted in their own earlier rational-liberative traditions —
+          traditions that mainstream history has largely written out.
+        </p>
+        <p>
+          So the catalogue runs in two directions at once. It brings in critical theory, social
+          exclusion research and comparative political thought from elsewhere; and it puts Phule,
+          Ambedkar, Periyar, Iyothee Thassar and Pandita Ramabai back into circulation as thinkers,
+          not icons.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Reach us</span>
+      <h2>Contact</h2>
+      <span class="rule"></span>
+    </div>
+    <div class="cgrid">
+      <div>
+        <h3>Post</h3>
+        <p>Critical Quest<br>420, G-Block, Phase VI<br>Aya Nagar<br>New Delhi 110047</p>
+      </div>
+      <div>
+        <h3>Phone</h3>
+        <p><a href="tel:+919910036543">+91 99100 36543</a><br><a href="tel:+911126502012">011 2650 2012</a></p>
+      </div>
+      <div>
+        <h3>Email</h3>
+        <p><a href="mailto:criticalquest@gmail.com">criticalquest@gmail.com</a><br>
+           <a href="mailto:criticalquest@rediffmail.com">criticalquest@rediffmail.com</a></p>
+      </div>
+      <div>
+        <h3>Trade &amp; bulk</h3>
+        <p>Institutions, study circles and bookshops — write to us for the standing discount on full sets.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>Critical Quest — New Social Science Library</span>
+    <span>Proprietor: Josna T. Jacob · Editor: Gnana Aloysius</span>
+    <span id="year"></span>
+  </div>
+</footer>
+
+<div class="dock" id="dock">
+  <div class="wrap">
+    <span><b id="dock-n">0</b> titles · <b id="dock-sum">₹0</b></span>
+    <button id="dock-clear">clear</button>
+    <a href="#order">Review order</a>
+  </div>
+</div>
+
+<script>
+/* ------------------------------------------------------------------
+   CATALOGUE DATA  —  edit this array to update the site.
+   [ no, author, title, pages, price ]
+------------------------------------------------------------------- */
+const BOOKS = [
+[1,"Pritam Singh","Institutional Communism",32,30],
+[2,"B. R. Mani","Bhakti Radicalism",40,35],
+[3,"Kai Nielsen","Philosophy as Critical Theory",32,30],
+[4,"G. Aloysius","Periyar & Modernity",80,60],
+[5,"Erich Fromm","Marx's Concept of Man",72,55],
+[6,"Ronojoy Sen","Hinduism and the Indian Supreme Court",48,40],
+[7,"Challapalli Swaroopa Rani","Bruised but not Broken",80,60],
+[8,"Jukka Jouhki","Orientalism & India",32,25],
+[9,"Allen Buchanan","Secession",40,30],
+[10,"Achin Vanaik","Marxism & Nationalism",64,50],
+[11,"Stephen Batchelor","A Secular Buddhism",40,30],
+[12,"M. S. S. Pandian","Interpreting the Dravidian Movement",96,60],
+[13,"Jotirao Phuley","Cultivator's Whipcord",80,60],
+[14,"G. Aloysius","Demystifying Modernity",48,35],
+[15,"Iyothee Thassar","Sudhesi Reform",72,50],
+[16,"E. O. Wright","Emancipatory Social Science",32,25],
+[17,"Sukhadeo Thorat","Prejudice against Reservation Policy?",32,25],
+[18,"M. N. Roy","Materialism in Indian Philosophy",40,30],
+[19,"R. A. Harris","Fact/Value Dichotomy",40,30],
+[20,"K. M. Balasubramaniam","Periyar — A Profile",40,30],
+[21,"V. I. Lenin","Religion",64,50],
+[22,"F. Engels","Revolutionary Christianity",64,50],
+[23,"K. Marx & F. Engels","A Critique of Religion",40,30],
+[24,"Pritam Singh","Hindu Bias in Indian Constitution",32,25],
+[25,"M. Kiran","Gandhi's Varnavyavastha",80,60],
+[26,"John Dewey","Social Inquiry",32,25],
+[27,"Marcus Green","Gramsci Cannot Speak",40,30],
+[28,"Harriet T. Mill","The Enfranchisement of Women",32,25],
+[29,"Hilary Silver","The Contexts of Social Inclusion",56,40],
+[30,"G. Aloysius","Periyar on Category-wise Rights",72,50],
+[31,"G. Aloysius","Contextualising Backward Classes Discourse",56,40],
+[32,"K. Kondala Rao","OBC and State Policy",88,60],
+[33,"Y. A. Raikar","Indian History: A Study in Dynamics",56,40],
+[34,"Rev. S. Gnanaprakasar OMI","The Origin of Caste among the Tamils",32,25],
+[35,"Peter McLaren","Critical Pedagogy",40,30],
+[36,"V. Geetha","Brahminism & the Anxieties of History",40,30],
+[37,"Titus Stahl","What is Immanent Critique?",32,25],
+[38,"Paul S. Adler et al.","Critical Management Studies",72,50],
+[39,"Bharat Patankar","Contemporary Caste System",32,25],
+[40,"J. J. Rousseau","The Origin of Inequality",64,50],
+[41,"Cressida J. Heyes","Identity Politics",40,30],
+[42,"Ralph Waldo Emerson","Self-Reliance",32,25],
+[43,"Duncan McDuie-Ra","Violence against Women",40,30],
+[44,"Umesh Bagade","Ambedkar's Historical Method",48,35],
+[45,"Christoph Wulf","Critical Educational Science",72,50],
+[46,"Murzban Jal","Asiatic/Caste Mode of Production",32,25],
+[47,"V. Geetha","Self-Respect Marriage",40,30],
+[48,"Mayilai Seeni Venkataswamy","Buddhism & Tamil",80,60],
+[49,"N. K. Das","Northeast India: A Profile",72,50],
+[50,"Uma Chakravarti","Pandita Ramabai Once More",32,25],
+[51,"Apoorv Kurup","Tribal Law in India",56,40],
+[52,"Naorem Sanajoba","AFSPA: A Law Review",40,30],
+[53,"Nandini Sundar","Buried Histories of Indian Democracy",64,45],
+[54,"B. R. Ambedkar","Christianising the Untouchables",64,45],
+[55,"Hilary Silver","Social Exclusion & Social Solidarity",72,50],
+[56,"John Dewey","Moral Principles in Education",32,25],
+[57,"B. R. Ambedkar","Triumph of Brahminism",72,50],
+[58,"B. R. Ambedkar","Castes in India",32,25],
+[59,"B. R. Ambedkar","Hindu Social Order",48,35],
+[60,"B. R. Ambedkar","States & Minorities",64,45],
+[61,"Douglas Kellner","Toward a Critical Theory of Education",32,25],
+[62,"Douglas Kellner","Cultural Marxism & Cultural Studies",32,25],
+[63,"Jayati Ghosh","Social Policy in Indian Development",40,30],
+[64,"Immanuel Kant","On Education",64,45],
+[65,"Kancha Ilaiah","Caste & the Muslims",40,30],
+[66,"Uma Chakravarti","Brahmanical Patriarchy",32,25],
+[67,"G. Aloysius","Conceptualising the Region",72,50],
+[68,"E. V. Ramasami Periyar","Village Reconstruction",56,40],
+[69,"Sukhadeo Thorat","Caste, Social Exclusion & Poverty",48,35],
+[70,"Fernando Tola & Carmen Dragonetti","Brahmanism & Buddhism",48,35],
+[71,"K. Purushotham","Black Lilies: Telugu Dalit Poetry",72,50],
+[72,"Pandita Ramabai","The High Caste Hindu Woman",64,45],
+[73,"Teun A. van Dijk","Principles of Critical Discourse Analysis",48,35],
+[74,"Paul Clavel","Region in Geography",32,25],
+[75,"Douglas Kellner","Theorizing Globalization",40,30],
+[76,"Pulin Nayak","Economic Development & Social Exclusion in India",40,30],
+[77,"Liah Greenfeld","Nationalism & Modernity",40,30],
+[78,"L. M. Joshi","Aspects of Buddhism in Indian History",48,35],
+[79,"Louis Althusser","Ideology & Ideological State Apparatus",56,40],
+[80,"Benedict Kingsbury","Indigenous Peoples in International Law",72,50],
+[81,"John Harriss","Researching Poverty",32,25],
+[82,"Brian K. Smith","Veda & Varna",32,25],
+[83,"D. Hume & A. Shepherd","Conceptualizing Chronic Poverty",40,30],
+[84,"Jayati Ghosh","Poverty Reduction in China & India",48,35],
+[85,"Ronojoy Sen","Legalizing Religion",48,35],
+[86,"B. Subbarao","Regions & Regionalism in India",40,30],
+[87,"William Bristow","Enlightenment",48,35],
+[88,"B. R. Ambedkar","Reminiscences of Untouchability",32,25],
+[89,"B. R. Ambedkar","Speeches at the Round Table Conference",40,30],
+[90,"Asma Barlas","Quran & Women's Liberation",40,30],
+[91,"Brian Fay","Critical Social Science",40,30],
+[92,"Hilary Silver","The Process of Social Exclusion",40,30],
+[93,"J. V. Stalin","Marxism & the Question of Nationalities",64,45],
+[94,"Ashok Rudra","Against Feudalism",32,25],
+[95,"Romila Thapar","Syndicated Hinduism",32,25],
+[96,"B. R. Ambedkar","Swaraj & the Depressed Classes",32,25],
+[97,"Maren B. Schempp","Ishvardatt Medharthi",32,25],
+[98,"K. Balagopal","Reservations: A Socio-Legal Perspective",56,40],
+[99,"G. Aloysius","The Brahminical Inscribed in Body-Politic",56,40],
+[100,"J. S. Mill et al.","Nation & Nationality",56,40],
+[101,"Istvan Meszaros","Ideology & Social Science",56,40],
+[102,"G. Aloysius","Iyothee Thassar & Thamizhan",64,45],
+[103,"Parimala V. Rao","Educate Women & Lose Nationality",48,35],
+[104,"B. R. Ambedkar","Philosophy of Hinduism",80,60],
+[105,"B. R. Ambedkar","What the Buddha Taught",56,40],
+[106,"Patricia Uberoi","Your Law & My Custom",32,25],
+[107,"Robert E. Frykenberg","Constructions of Hinduism",32,25],
+[108,"F. Franco & Sherry Chand","Varna Ideology as Social Practice",40,30],
+[109,"Charles Taylor","Modern Social Imaginaries",40,30],
+[110,"Periyar E. V. Ramasami","Women Enslaved",56,40],
+[111,"B. R. Ambedkar","Ambedkar on Nation & Nationalism",80,60],
+[112,"Max Horkheimer","Traditional & Critical Theory",48,35],
+[113,"Daniel Philpott","In Defence of Self-Determination",40,30],
+[114,"Piyasena Dissanayake","Buddhist Political Theory",40,30],
+[115,"B. R. Ambedkar","Gandhi & Gandhism",56,40],
+[116,"Arjan de Haan & Naila Kabeer","Social Exclusion (Two Essays)",40,30],
+[117,"Jotirao Phuley","Slavery",72,50],
+[118,"Ronki Ram","Mangoo Ram, Ad Dharm & the Dalit Movement",32,25],
+[119,"Valerian Rodrigues","Dalit-Bahujan Discourse in Modern India",40,30],
+[120,"Clifford Bob","Dalit Rights are Human Rights",32,25],
+[121,"Richard King","Orientalism & the Myth of Modern Hinduism",40,30],
+[122,"Nancy Fraser","Social Justice in the Era of Identity Politics",48,35],
+[123,"John MacDougall","Tribal Resistances",32,25],
+[124,"Meghnad Desai","India & China: Comparative Political Economy",32,25],
+[125,"B. R. Ambedkar","Annihilation of Caste",72,55],
+[126,"L. M. Joshi","Brahmanism, Buddhism & Hinduism",40,30],
+[127,"P. C. Upadhyay","The Politics of Indian Secularism",40,30],
+[128,"D. Chattopadhyaya","Science, Philosophy & Society",40,30],
+[129,"Braj Ranjan Mani","Resurgent Buddhism",32,25],
+[130,"Alex Callinicos","Karl Marx: Life of a Revolutionary",32,25],
+[131,"Barbara H. White","India's Socially Regulated Economy",32,25],
+[132,"Mao Tse-tung","On Contradiction",48,35],
+[133,"Uma Chakravarti","Pandita Ramabai: A Life and a Time",40,30],
+[134,"M. Sahadevan","Sahodaran Ayyappan",32,25],
+[135,"Nandini Gooptu","Swami Acchutanand & the Adi Hindu Movement",40,30],
+[136,"B. R. Ambedkar","Gandhi & Emancipation of Untouchables",32,25],
+[137,"Meera Nanda","A Prophet Facing Forward",32,25],
+[138,"Lee Tucker","Child Slaves in Modern India",48,30],
+[139,"M. N. Roy","Historical Role of Islam",40,30],
+[140,"Ashok Rudra","Intelligentsia as a Ruling Class",32,25],
+[141,"Mats Alvesson","Postmodernism",48,35],
+[142,"Nalin Swaris","Buddhism, Human Rights & Social Renewal",48,30],
+[143,"Thirumalai & Mallikarjuna","In Defence of Vernaculars",40,30],
+[144,"D. Kane","Chhatrapati Sahu's Crusade against Untouchability",32,25],
+[145,"S. Omana","Sri Narayana Guru",32,25],
+[146,"G. Aloysius","Periyar on Buddhism",40,30],
+[147,"Eleanor Zelliot","Ambedkar's Conversion",32,30],
+[148,"M. C. Rajah","The Oppressed Hindus",48,35],
+[149,"B. R. Ambedkar","Buddha or Karl Marx",32,25],
+[150,"John Hoffman","The World of the Mundas I",48,35],
+[151,"John Hoffman","The World of the Mundas II",48,35],
+[152,"G. Aloysius","Interpreting Kerala's Social Development",32,25],
+[153,"S. Bandyopadhyay","The Namasudra Movement",32,25],
+[154,"Raymond Williams","Marx on Culture",32,25],
+[155,"Sukhadeo Thorat","Hindu Social System & Human Rights of Untouchables",40,30],
+[156,"Amartya Sen","Social Exclusion",56,40],
+[157,"Romila Thapar","Imagined Religious Communities?",32,25],
+[158,"G. Aloysius","Periyar on Islam",40,30],
+[159,"Gail Omvedt","Phule & the Ideology of Social Revolution",40,30],
+[160,"B. R. Ambedkar","Conversion as Emancipation",40,30],
+[161,"K. M. Panikkar","Caste & Democracy",32,25],
+[162,"B. Patankar & G. Omvedt","Dalit Liberation Movement",32,25],
+[163,"G. Aloysius","Iyothee Thassar & Emancipatory Buddhism",48,35],
+[164,"Uma Chakravarti","Philosophy of Buddhism & the Problem of Inequality",32,25]
+];
+
+const ALSO = [
+  ["G. Aloysius","Nationalism without a Nation in India",385],
+  ["G. Aloysius","Iyothee Thassar & the Tamil Buddhist Movement",365],
+  ["G. Aloysius (ed.)","Iyothee Thassar Sinthanaigal (3 vols., Tamil)",2200]
+];
+
+/* ---------- subject tags, derived from author + title ---------- */
+const TAGS = [
+  ["Ambedkar",        /ambedkar/i],
+  ["Caste & exclusion",/caste|varna|brahmin|brahman|dalit|untouch|reservation|obc|exclusion|phule|namasudra|ad dharm|backward|bahujan|inequality|poverty/i],
+  ["Buddhism",        /buddh|munda|narayana guru|sahodaran/i],
+  ["Periyar & Dravidian",/periyar|dravidian|iyothee|thassar|self-respect|tamil|thamizhan/i],
+  ["Marxism",         /marx|engels|lenin|stalin|gramsci|althusser|mao|communism|feudal|meszaros|callinicos|williams|political economy/i],
+  ["Critical theory & education",/critical|pedagog|dewey|kant|education|horkheimer|discourse|philosoph|enlighten|postmodern|modernity|imaginaries|immanent/i],
+  ["Gender",          /women|patriarchy|ramabai|marriage|enfranchisement|gender/i],
+  ["Nation, region & tribe",/nation|region|tribal|munda|northeast|afspa|indigenous|self-determination|secession|identity politics|kerala/i],
+  ["Religion & secularism",/religion|hindu|islam|muslim|quran|christ|secular|bhakti|god/i]
+];
+const tagsFor = b => {
+  const hay = b[1] + " " + b[2];
+  const t = TAGS.filter(([, re]) => re.test(hay)).map(([n]) => n);
+  return t.length ? t : ["Social theory"];
+};
+BOOKS.forEach(b => b.tags = tagsFor(b));
+
+/* ---------- state ---------- */
+const sel = new Set();
+let filter = null, query = "";
+const $ = id => document.getElementById(id);
+const rupees = n => "₹" + n.toLocaleString("en-IN");
+
+/* ---------- cover facts ---------- */
+const SET_TOTAL = BOOKS.reduce((s, b) => s + b[4], 0);
+$("fact-count").textContent = BOOKS.length + " titles in print";
+$("fact-total").textContent = "Complete set " + rupees(SET_TOTAL);
+$("year").textContent = "© " + new Date().getFullYear();
+$("slip-date").textContent = new Date().toLocaleDateString("en-IN", {day:"2-digit",month:"short",year:"numeric"});
+
+/* ---------- filter chips ---------- */
+const counts = {};
+BOOKS.forEach(b => b.tags.forEach(t => counts[t] = (counts[t] || 0) + 1));
+const chipNames = Object.keys(counts).sort((a, b) => counts[b] - counts[a]);
+$("chips").innerHTML =
+  `<button class="chip" data-tag="" aria-pressed="true">All <b>${BOOKS.length}</b></button>` +
+  chipNames.map(t => `<button class="chip" data-tag="${t}" aria-pressed="false">${t} <b>${counts[t]}</b></button>`).join("");
+
+$("chips").addEventListener("click", e => {
+  const btn = e.target.closest(".chip");
+  if (!btn) return;
+  filter = btn.dataset.tag || null;
+  [...$("chips").children].forEach(c => c.setAttribute("aria-pressed", String(c === btn)));
+  render();
+});
+
+/* ---------- list ---------- */
+function visible() {
+  const q = query.trim().toLowerCase();
+  return BOOKS.filter(b => {
+    if (filter && !b.tags.includes(filter)) return false;
+    if (!q) return true;
+    return (b[1] + " " + b[2]).toLowerCase().includes(q);
+  });
+}
+
+function render() {
+  const rows = visible();
+  $("list").innerHTML = rows.map(b => `
+    <li class="row${sel.has(b[0]) ? " sel" : ""}" data-id="${b[0]}">
+      <span class="sl">${String(b[0]).padStart(3, "0")}</span>
+      <label>
+        <input type="checkbox" ${sel.has(b[0]) ? "checked" : ""} data-id="${b[0]}">
+        <span class="who">${b[1]}</span>
+        <span class="what">${b[2]}</span>
+      </label>
+      <span class="pgs">${b[3]} pp</span>
+      <span class="rs">${rupees(b[4])}</span>
+      <span class="box" aria-hidden="true">✓</span>
+    </li>`).join("");
+  $("empty").hidden = rows.length > 0;
+  $("showing").textContent = rows.length === BOOKS.length
+    ? `${BOOKS.length} titles · complete set ${rupees(SET_TOTAL)}`
+    : `Showing ${rows.length} of ${BOOKS.length} titles`;
+}
+
+$("list").addEventListener("click", e => {
+  const row = e.target.closest(".row");
+  if (!row) return;
+  if (e.target.tagName !== "INPUT") e.preventDefault();
+  const id = Number(row.dataset.id);
+  sel.has(id) ? sel.delete(id) : sel.add(id);
+  row.classList.toggle("sel", sel.has(id));
+  const cb = row.querySelector("input");
+  if (cb) cb.checked = sel.has(id);
+  updateSlip();
+});
+
+$("q").addEventListener("input", e => { query = e.target.value; render(); });
+$("selall").addEventListener("click", () => { BOOKS.forEach(b => sel.add(b[0])); render(); updateSlip(); });
+$("clearall").addEventListener("click", () => { sel.clear(); render(); updateSlip(); });
+$("dock-clear").addEventListener("click", () => { sel.clear(); render(); updateSlip(); });
+
+/* ---------- order slip ---------- */
+function chosen() { return BOOKS.filter(b => sel.has(b[0])); }
+
+function slipText() {
+  const items = chosen();
+  const sum = items.reduce((s, b) => s + b[4], 0);
+  return "CRITICAL QUEST — ORDER\n" +
+    "Date: " + $("slip-date").textContent + "\n\n" +
+    items.map(b => `${String(b[0]).padStart(3,"0")}  ${b[1]}: ${b[2]}  —  Rs ${b[4]}`).join("\n") +
+    `\n\nTotal: ${items.length} titles, Rs ${sum}\n\n` +
+    "Name:\nPostal address:\nPhone:\n\nPayment: bank transfer / MO / DD favouring CRITICAL QUEST, New Delhi.";
+}
+
+function updateSlip() {
+  const items = chosen();
+  const sum = items.reduce((s, b) => s + b[4], 0);
+  $("slip-lines").innerHTML = items.map(b =>
+    `<li><span>${String(b[0]).padStart(3,"0")}</span><span>${b[2]}</span><span>${rupees(b[4])}</span></li>`).join("");
+  $("slip-none").hidden = items.length > 0;
+  $("slip-count").textContent = items.length + (items.length === 1 ? " title" : " titles");
+  $("slip-sum").textContent = rupees(sum);
+  $("dock-n").textContent = items.length;
+  $("dock-sum").textContent = rupees(sum);
+  $("dock").classList.toggle("on", items.length > 0);
+
+  const live = items.length > 0;
+  ["copy","mail","wa"].forEach(id => $(id).setAttribute("aria-disabled", String(!live)));
+  if (live) {
+    const body = encodeURIComponent(slipText());
+    $("mail").href = `mailto:criticalquest@gmail.com?subject=${encodeURIComponent("Book order — " + items.length + " titles")}&body=${body}`;
+    $("wa").href = `https://wa.me/919910036543?text=${body}`;
+  }
+}
+
+$("copy").addEventListener("click", async () => {
+  try {
+    await navigator.clipboard.writeText(slipText());
+    $("copy").textContent = "Copied";
+  } catch {
+    $("copy").textContent = "Press ⌘/Ctrl+C";
+  }
+  setTimeout(() => { $("copy").textContent = "Copy slip"; }, 2200);
+});
+
+/* ---------- also available ---------- */
+$("also").innerHTML = ALSO.map(([a, t, p]) => `
+  <div class="also-card">
+    <span class="who">${a}</span>
+    <h4>${t}</h4>
+    <span class="rs">${rupees(p)}</span>
+  </div>`).join("");
+
+/* ---------- top bar on scroll ---------- */
+const bar = $("topbar");
+addEventListener("scroll", () => {
+  bar.classList.toggle("on", scrollY > innerHeight * 0.85);
+}, { passive: true });
+
+render();
+updateSlip();
+</script>
+</body>
+</html>
